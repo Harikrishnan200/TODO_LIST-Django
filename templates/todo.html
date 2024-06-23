@@ -1,0 +1,85 @@
+   {% extends 'home.html' %}
+   
+   {% block content %}
+   
+    {% include 'navbar.html' %}
+
+    <section class="vh-100 gradient-custom-2">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-md-12 col-xl-10">
+      
+                    <div class="card mask-custom">
+                        
+                        <div class="card-body p-4 text-white">
+      
+                            <div class="text-center pt-3 pb-2">
+                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-todo-list/check1.webp"
+                                    alt="Check" width="60">
+                                <h2 class="my-4">Task List</h2>
+                                <a href="{% url 'add_task' %}">
+                                    <button type="button" class="btn btn-primary"><b>Add Task</b></button>
+                                </a>
+                            </div>
+      
+                            <table class="table text-white mb-0">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Team Member</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Priority</th>
+                                        <th scope="col">Actions</th>
+                                        <th scope="col">Change Status</th>
+                                       
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                   {% for task in tasks %} 
+                                    <tr class="fw-normal">
+                                        <th class="pt-3 pb-3">
+                                            
+                                            <span class="ms-2">{{task.task}} </span>
+                                        </th>
+                                        <td class="align-middle">
+                                            {% if task.completed %}
+                                            <span>Completed</span>
+                                            {% else %}
+                                            <span>Not Completed</span>
+                                            {% endif %}
+                                        </td>
+                                        <td class="align-middle">
+                                            {% if task.priority == 3 %}
+                                            <h6 class="mb-0"><span class="badge bg-danger">High priority</span></h6>
+                                            {% elif task.priority == 2 %}
+                                            <h6 class="mb-0"><span class="badge bg-warning">Medium priority</span></h6>
+                                            {% else %}
+                                            <h6 class="mb-0"><span class="badge bg-success">Low priority</span></h6>
+                                            {% endif %}
+                                        </td>
+                                        <td class="align-middle">
+                                            <a href="{% url 'edit_task' task.id %}" data-mdb-tooltip-init title="Done"><i class="fa-solid fa-pen-to-square me-3" style="color: #63E6BE;"></i></a>
+                                            <a href="{% url 'delete_task' task.id %}" data-mdb-tooltip-init title="Remove"><i class="fas fa-trash-alt fa-lg text-warning"></i></a>
+                                        </td>
+                                        <td class="align-middle">
+                                            <a href="{% url 'change_status' task.id %}">
+                                                {% if task.completed %}
+                                                    <button type="button" class="btn btn-success">Complete</button>
+                                        
+                                                {% else %}
+                                                    <button type="button" class="btn btn-danger">Not complete</button>
+                                                {% endif %}
+                                        </a>
+                                        </td>
+                                    </tr>
+                                   {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% endblock %}
