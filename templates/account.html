@@ -1,5 +1,5 @@
 {% load static %}
-<script src="{% static 'js/login.js' %}"></script>
+
 
 <style>
     @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
@@ -187,6 +187,26 @@ form .btn input[type="submit"]{
   font-weight: 500;
   cursor: pointer;
 }
+.container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.error_form-container{
+  background-color: #f8d7da;
+  color: red;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.success_form-container{
+  background-color: #8cd9a7;
+  color: rgb(21, 203, 15);
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 10px;
+}
 
 </style>
 
@@ -205,35 +225,97 @@ form .btn input[type="submit"]{
         <div class="slider-tab"></div>
       </div>
       <div class="form-inner">
-        <form action="#" class="login">
+        <form action="{% url 'account' %}" method="post" class="login">
+          {% csrf_token %}
           <div class="field">
-            <input type="text" placeholder="Email Address" required>
+            <input type="text" placeholder="Username" name="username" required>
           </div>
           <div class="field">
-            <input type="password" placeholder="Password" required>
+            <input type="password" name="password" placeholder="Password" required>
           </div>
           <div class="pass-link"><a href="#">Forgot password?</a></div>
           <div class="field btn">
             <div class="btn-layer"></div>
-            <input type="submit" value="Login">
+            <input type="submit" name="login" value="Login">
           </div>
           <div class="signup-link">Not a member? <a href="">Signup now</a></div>
+          <div class="container">
+            {% if messages %}
+                <div class="error_form-container">
+                    {% for message in messages %}
+                        <p class="{{ message.tags }}">{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+        
+          
         </form>
-        <form action="#" class="signup">
+        
+
+
+
+        <form action="{% url 'account' %}" method="post" class="signup">
+          {% csrf_token %}
           <div class="field">
-            <input type="text" placeholder="Email Address" required>
+            <input type="text" placeholder="Full name" name="fullname"  required>
           </div>
           <div class="field">
-            <input type="password" placeholder="Password" required>
+            <input type="email" placeholder="Email Address" name="email"  required>
           </div>
           <div class="field">
-            <input type="password" placeholder="Confirm password" required>
+            <input type="text" placeholder="Username" name="username"  required>
+          </div>
+          <div class="field">
+            <input type="password" placeholder="Password" name="password1" required>
+          </div>
+          <div class="field">
+            <input type="password" placeholder="Confirm password" name="password2"  required>
           </div>
           <div class="field btn">
             <div class="btn-layer"></div>
-            <input type="submit" value="Signup">
+            <input type="submit" name="register" value="Signup">
           </div>
+
+          {% if messages %}
+      <div class="container middle">
+      <div class="">
+           
+            {% for message in messages %}
+            <p class="{{message.tags}}">{{message}}</p>
+                
+             {% endfor %}
         </form>
+
       </div>
+      
+          
+      </div>
+  </div>
+  {% endif %}
     </div>
   </div>
+
+ <script>
+const loginText = document.querySelector(".title-text .login");
+const loginForm = document.querySelector("form.login");
+const loginBtn = document.querySelector("label.login");
+const signupBtn = document.querySelector("label.signup");
+const signupLink = document.querySelector("form .signup-link a");
+signupBtn.onclick = (()=>{
+  loginForm.style.marginLeft = "-50%";
+  loginText.style.marginLeft = "-50%";
+});
+loginBtn.onclick = (()=>{
+  loginForm.style.marginLeft = "0%";
+  loginText.style.marginLeft = "0%";
+});
+signupLink.onclick = (()=>{
+  signupBtn.click();
+  return false;
+});
+
+
+</script>
+
